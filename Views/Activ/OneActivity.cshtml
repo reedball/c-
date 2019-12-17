@@ -1,0 +1,42 @@
+@model OneActivView
+
+<h1>Dojo Activity Center</h1>
+<a asp-action="All" asp-controller="Activ">Home</a>
+<a asp-action="logout" asp-controller="Home">Logout</a>
+@if (@Model.oneActiv.Creator.UserId == ViewBag.UserId)
+{
+    <form asp-action="Delete" asp-controller="Activ" asp-route-activId="@Model.oneActiv.ActivityId" method="Post">
+        <button>Delete</button>
+    </form>
+}
+else if (@Model.oneActiv.GuestList.Any(w => w.UserId == ViewBag.UserID)) 
+{
+    <form asp-action="Respond" asp-controller="Activ" asp-route-activId="@Model.oneActiv.ActivityId" method="Post">
+        <button>Leave</button>
+    </form>
+} else
+{
+<form asp-action="Respond" asp-controller="Activ" asp-route-activId="@Model.oneActiv.ActivityId" method="Post">
+    <button>Join</button>
+</form>
+}
+
+<h3 class="title">@Model.oneActiv.Title</h3>
+<h5>Event Coordinator: @Model.oneActiv.Creator.FirstName</h5>
+<h5>Description: @Model.oneActiv.Description</h5>
+<h5>Participants:</h5>
+@foreach(var guest in Model.oneActiv.GuestList){
+    <p>@guest.Participator.FirstName</p>
+}
+<form asp-action="NewComment" asp-controller="Activ" method="post" asp-route-activId="@Model.oneActiv.ActivityId">
+    <div class="form-group">
+        <label asp-for="newComment.CommentBody">Comment:</label>
+        <textarea class="form-control" rows="5" id="comment" asp-for="newComment.CommentBody"></textarea>
+        <button type="submit" class="btn btn-md btn-primary">Comment</button>
+    </div>
+</form>
+@foreach(var comment in Model.CommentsforActiv){
+    <h1>@comment.Commenter.FirstName</h1>
+    <p>@comment.CommentBody</p>
+
+}

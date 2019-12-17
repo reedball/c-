@@ -1,0 +1,48 @@
+@model List<Activ>
+
+<h1>Dojo Activity Center</h1>
+<a asp-action="logout" asp-controller="Home">Logout</a>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Activity:</th>
+      <th scope="col">Date and Time:</th>
+      <th scope="col">Duration:</th>
+      <th scope="col">Event Coordinator:</th>
+      <th scope="col">No. of Participants:</th>
+      <th scope="col">Actions:</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var activ in Model){
+    <tr>
+      <td><a href="/activity/@activ.ActivityId">@activ.Title</a></td>
+      <td>@activ.Date.ToString("MM/dd/yyyy") @activ.Time</td>
+      <td>@activ.Duration @activ.Selection</td>
+      <td>@activ.Creator.FirstName @activ.Creator.LastName</td>
+      <td>@activ.GuestList.Count</td>
+      <td>
+          @if (@activ.Creator.UserId == ViewBag.UserId)
+          {
+              <form asp-action="Delete" asp-controller="Activ" asp-route-activId="@activ.ActivityId" method="Post">
+                  <button>Delete</button>
+              </form>
+          }
+          else if (activ.GuestList.Any(w => w.UserId == ViewBag.UserID)) 
+          {
+              <form asp-action="Respond" asp-controller="Activ" asp-route-activId="@activ.ActivityId" method="Post">
+                    <button>Leave</button>
+              </form>
+          } else
+          {
+            <form asp-action="Respond" asp-controller="Activ" asp-route-activId="@activ.ActivityId" method="Post">
+                <button>Join</button>
+            </form>
+          }
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>
+
+<a asp-action="New" asp-controller="Activ"> Add New Activity</a>
