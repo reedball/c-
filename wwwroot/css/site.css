@@ -60,3 +60,34 @@ body {
   text-decoration: underline;
   text-transform: uppercase;
 }
+
+.background{
+  background-color: #06aae2;
+  padding: 50px;
+}
+
+.container{
+  border-radius: 25px;
+  padding: 15px;
+  background-color: black;
+  color: snow;
+  font-family: cursive;
+}
+
+.btn-info{
+  color: black;
+  background-color: turquoise;
+  border-color: #17a2b8
+}
+
+.btn-info:hover{
+  color: snow;
+  background-color: #06aae2;
+  border-color: blue;
+}
+
+.header{
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: underline;
+}
