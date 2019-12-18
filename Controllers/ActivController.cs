@@ -10,16 +10,19 @@ namespace CBelt.Controllers
     public class ActivController : Controller
     {
         private MyContext DbContext;
-        public ActivController(MyContext context){
+        public ActivController(MyContext context)
+        {
             DbContext = context;
-        } 
+        }
         [HttpGet("home")]
         public IActionResult All()
         {
-            if(HttpContext.Session.GetInt32("userId")==null){
+            if (HttpContext.Session.GetInt32("userId") == null)
+            {
                 return RedirectToAction("Index", "Home");
             }
-            else {
+            else
+            {
                 List<Activ> allActivs = DbContext.Activs
                 .OrderBy(a => a.Date)
                 .Include(b => b.Creator)
@@ -38,17 +41,30 @@ namespace CBelt.Controllers
         [HttpPost("activs/create")]
         public IActionResult Create(Activ newActiv)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 newActiv.Creator = DbContext.Users.FirstOrDefault(user => user.UserId == HttpContext.Session.GetInt32("userId"));
                 DbContext.Activs.Add(newActiv);
                 DbContext.SaveChanges();
-                return RedirectToAction("All"); 
+                return RedirectToAction("All");
             }
+            else
+            {
+                if (newActiv.Date.Year == 1)
+                {
+                    // Add error message for Bid
+                    if (ModelState.ContainsKey("Date") == true)
+                    {
+                        ModelState["Date"].Errors.Clear();
+                    }
+                    ModelState.AddModelError("Date", "Date is Invalid");
+                }
+            }
+            
             return View("New");
         }
         [HttpGet("activity/{activId}")]
-        public IActionResult OneActivity (int activId)
+        public IActionResult OneActivity(int activId)
         {
             var oneActiv = DbContext.Activs
             .Include(a => a.Creator)
@@ -79,7 +95,7 @@ namespace CBelt.Controllers
         }
 
         [HttpPost("activity/join/{activId}")]
-        public IActionResult Respond (int activId)
+        public IActionResult Respond(int activId)
         {
             var DidParticipate = DbContext.Participates.Where(w => w.ActivityId == activId).FirstOrDefault(u => u.UserId == HttpContext.Session.GetInt32("userId"));
             if (DidParticipate == null)
@@ -102,16 +118,17 @@ namespace CBelt.Controllers
         public IActionResult NewComment(OneActivView fromform, int activId)
         {
             Activ activToComment = DbContext.Activs.FirstOrDefault(act => act.ActivityId == activId);
-            if(ModelState.IsValid){
+            if (ModelState.IsValid)
+            {
                 //specifying the foreign key to matching the activity it is related to
-                fromform.newComment.ActivityId=activId;
+                fromform.newComment.ActivityId = activId;
                 //fk for the user that commented
                 fromform.newComment.UserId = (int)HttpContext.Session.GetInt32("userId");
                 //creating newComment
                 DbContext.Add(fromform.newComment);
                 //actually adding the newComment to the database
                 DbContext.SaveChanges();
-                return RedirectToAction("OneActivity", new{activId=activId});
+                return RedirectToAction("OneActivity", new { activId = activId });
             }
             return View("OneActivity", activToComment);
         }

@@ -30,6 +30,10 @@ namespace CBelt.Models
 
         [Required(ErrorMessage = "is required.")]
         public string Selection {get;set;}
+        public string Location {get;set;}
+        public string Lat {get;set;}
+        public string Long {get;set;}
+
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
         public int UserId { get;set; }

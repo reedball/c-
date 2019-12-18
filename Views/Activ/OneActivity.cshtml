@@ -28,6 +28,30 @@ else if (@Model.oneActiv.GuestList.Any(w => w.UserId == ViewBag.UserID))
 @foreach(var guest in Model.oneActiv.GuestList){
     <p>@guest.Participator.FirstName</p>
 }
+<div>
+    <h1>Map</h1>
+    <div id="map"></div>
+    <script>
+        function initMap(){
+            var options = {
+                zoom: 8,
+                center: {lat: @Model.oneActiv.Lat, lng: @Model.oneActiv.Long}
+            }
+
+            var map = new
+            google.maps.Map(document.getElementById('map'), options);
+            //new marker
+            var marker = new google.maps.Marker({
+                position: {lat: @Model.oneActiv.Lat, lng: @Model.oneActiv.Long},
+                map:map
+                
+            })
+        }
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAm5aBU78To4c2ltM9d8HW_8BoCOieNV0&callback=initMap">
+    </script>
+</div>
 <form asp-action="NewComment" asp-controller="Activ" method="post" asp-route-activId="@Model.oneActiv.ActivityId">
     <div class="form-group">
         <label asp-for="newComment.CommentBody">Comment:</label>
