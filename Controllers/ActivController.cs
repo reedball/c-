@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CBelt.Models;
@@ -17,6 +18,7 @@ namespace CBelt.Controllers
         [HttpGet("home")]
         public IActionResult All()
         {
+            
             if (HttpContext.Session.GetInt32("userId") == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -24,6 +26,7 @@ namespace CBelt.Controllers
             else
             {
                 List<Activ> allActivs = DbContext.Activs
+                .Where(act => act.Date >= DateTime.Now)
                 .OrderBy(a => a.Date)
                 .Include(b => b.Creator)
                 .Include(c => c.GuestList)

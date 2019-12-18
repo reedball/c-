@@ -1,6 +1,6 @@
 @model OneActivView
 
-<h1>Dojo Activity Center</h1>
+
 <a asp-action="All" asp-controller="Activ">Home</a>
 <a asp-action="logout" asp-controller="Home">Logout</a>
 @if (@Model.oneActiv.Creator.UserId == ViewBag.UserId)
@@ -27,14 +27,18 @@ else if (@Model.oneActiv.GuestList.Any(w => w.UserId == ViewBag.UserID))
 <h5>Participants:</h5>
 @foreach(var guest in Model.oneActiv.GuestList){
     <p>@guest.Participator.FirstName</p>
+
 }
+<p>@Model.oneActiv.Location</p>
+
 <div>
-    <h1>Map</h1>
-    <div id="map"></div>
+    @if(@Model.oneActiv.Location != null){
+        <div id="map"></div>
+    }
     <script>
         function initMap(){
             var options = {
-                zoom: 8,
+                zoom: 13,
                 center: {lat: @Model.oneActiv.Lat, lng: @Model.oneActiv.Long}
             }
 
@@ -44,14 +48,18 @@ else if (@Model.oneActiv.GuestList.Any(w => w.UserId == ViewBag.UserID))
             var marker = new google.maps.Marker({
                 position: {lat: @Model.oneActiv.Lat, lng: @Model.oneActiv.Long},
                 map:map
+                
+                
             })
-
         }
     </script>
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDAm5aBU78To4c2ltM9d8HW_8BoCOieNV0&callback=initMap">
     </script>
 </div>
+
+<h5>@Model.oneActiv.Location</h5>
+
 <form asp-action="NewComment" asp-controller="Activ" method="post" asp-route-activId="@Model.oneActiv.ActivityId">
     <div class="form-group">
         <label asp-for="newComment.CommentBody">Comment:</label>
@@ -60,7 +68,8 @@ else if (@Model.oneActiv.GuestList.Any(w => w.UserId == ViewBag.UserID))
     </div>
 </form>
 @foreach(var comment in Model.CommentsforActiv){
-    <h1>@comment.Commenter.FirstName</h1>
+    <h3>@comment.Commenter.FirstName</h3>
     <p>@comment.CommentBody</p>
+    <p>@comment.CreatedAt</p>
 
 }

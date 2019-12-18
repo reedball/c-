@@ -71,7 +71,7 @@ body {
   padding: 15px;
   background-color: black;
   color: snow;
-  font-family: cursive;
+  font-family: chalkboard;
 }
 
 .btn-info{
@@ -90,4 +90,11 @@ body {
   text-align: center;
   text-transform: uppercase;
   text-decoration: underline;
+}
+#map{
+  height: 400px;
+  width: 100%;
+}
+.table{
+  color:snow;
 }
