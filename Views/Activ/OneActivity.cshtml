@@ -44,8 +44,8 @@ else if (@Model.oneActiv.GuestList.Any(w => w.UserId == ViewBag.UserID))
             var marker = new google.maps.Marker({
                 position: {lat: @Model.oneActiv.Lat, lng: @Model.oneActiv.Long},
                 map:map
-                
             })
+
         }
     </script>
     <script async defer
