@@ -1,11 +1,11 @@
 @model OneActivView
 
 
-<a asp-action="All" asp-controller="Activ">Home</a>
+<a asp-action="All" asp-controller="Activ" class="nav">Home</a>
 <a asp-action="logout" asp-controller="Home">Logout</a>
 @if (@Model.oneActiv.Creator.UserId == ViewBag.UserId)
 {
-    <form asp-action="Delete" asp-controller="Activ" asp-route-activId="@Model.oneActiv.ActivityId" method="Post">
+    <form class="delete" asp-action="Delete" asp-controller="Activ" asp-route-activId="@Model.oneActiv.ActivityId" method="Post">
         <button>Delete</button>
     </form>
 }
