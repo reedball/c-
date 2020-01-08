@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CBelt.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20191216203030_DateVal")]
-    partial class DateVal
+    [Migration("20191218181646_NewMig")]
+    partial class NewMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,6 +33,12 @@ namespace CBelt.Migrations
 
                     b.Property<int>("Duration");
 
+                    b.Property<string>("Lat");
+
+                    b.Property<string>("Location");
+
+                    b.Property<string>("Long");
+
                     b.Property<string>("Selection")
                         .IsRequired();
 
@@ -50,6 +56,31 @@ namespace CBelt.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Activs");
+                });
+
+            modelBuilder.Entity("CBelt.Models.Comment", b =>
+                {
+                    b.Property<int>("CommentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("ActivityId");
+
+                    b.Property<string>("CommentBody")
+                        .IsRequired();
+
+                    b.Property<DateTime>("CreatedAt");
+
+                    b.Property<DateTime>("UpdatedAt");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("ActivityId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("CBelt.Models.Participate", b =>
@@ -104,6 +135,19 @@ namespace CBelt.Migrations
                 {
                     b.HasOne("CBelt.Models.User", "Creator")
                         .WithMany("ActivCreated")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("CBelt.Models.Comment", b =>
+                {
+                    b.HasOne("CBelt.Models.Activ", "ActivCommented")
+                        .WithMany("Comments")
+                        .HasForeignKey("ActivityId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CBelt.Models.User", "Commenter")
+                        .WithMany("ActivToComment")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
