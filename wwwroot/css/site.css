@@ -98,3 +98,21 @@ body {
 .table{
   color:snow;
 }
+
+.right-align{
+  display: block;
+  text-align: end;
+}
+
+.nav{
+  margin-left: 965px;
+  border-right: 2px solid snow;
+  padding-right: 5px;
+  margin-right: 3px;
+  display: inline-block;
+}
+
+.delete{
+  text-align: end;
+  margin-right: 15px;
+}
